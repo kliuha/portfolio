@@ -1,6 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { Home, About, Contacts } from "./pages";
+import { Analytics } from "@vercel/analytics/react";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
           <Route path="/contact" element={<Contacts />} />
         </Routes>
       </Router>
+      <Analytics />
     </main>
   );
 };
