@@ -22,14 +22,13 @@ const Navbar = () => {
           <p>About</p>
         </NavLink>
 
-        <NavLink
-          to="/projects"
-          className={({ isActive }) =>
-            isActive ? "text-blue-500" : "text-black"
-          }
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/kliuha"
         >
-          <p>Projects</p>
-        </NavLink>
+          Projects
+        </a>
       </nav>
     </header>
   );
