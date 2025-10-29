@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 import { Canvas } from "@react-three/fiber";
 import { Fox } from "../models/Fox";
@@ -17,6 +17,26 @@ const Contacts = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [currentAnimation, setCurrentAnimation] = useState("idle");
+
+  const [foxScale, setFoxScale] = useState([0.5, 0.5, 0.5]);
+  const [foxPosition, setFoxPosition] = useState([0.5, 0.35, 0]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setFoxScale([0.4, 0.4, 0.4]);
+        setFoxPosition([0, 0, 0]);
+      } else {
+        setFoxScale([0.5, 0.5, 0.5]);
+        setFoxPosition([0.5, 0.35, 0]);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const { alert, showAlert, hideAlert } = useAlert();
 
@@ -74,9 +94,9 @@ const Contacts = () => {
   };
 
   return (
-    <section className="relative flex lg:flex-row flex-col max-container">
+    <section className="relative flex lg:flex-row flex-col max-container h-full overflow-hidden">
       {alert.show && <Alert {...alert} />}
-      <div className="flex-1 min-w-[50%] flex flex-col">
+      <div className="flex-1 min-w-[50%] flex flex-col z-10">
         <h1 className="head-text">Get in Touch</h1>
 
         <form
@@ -133,7 +153,7 @@ const Contacts = () => {
           </button>
         </form>
       </div>
-      <div className="lg:w-1/2 w-full lg:h-auto md:h-[500px] h-[300px]">
+      <div className="lg:w-1/2 w-full lg:h-auto md:h-[500px] h-full lg:relative absolute lg:top-0 top-0 right-0 left-0 bottom-0">
         <Canvas
           camera={{
             position: [0, 0, 5],
@@ -146,9 +166,9 @@ const Contacts = () => {
           <ambientLight intensity={0.5} />
           <Suspense fallback={<Loader />}>
             <Fox
-              position={[0.5, 0.35, 0]}
+              position={foxPosition}
               rotation={[12.6, -0.6, 0]}
-              scale={[0.5, 0.5, 0.5]}
+              scale={foxScale}
               currentAnimation={currentAnimation}
             />
           </Suspense>
